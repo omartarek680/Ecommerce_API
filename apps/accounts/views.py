@@ -1,6 +1,6 @@
 from rest_framework.generics import  RetrieveUpdateAPIView, GenericAPIView, ListCreateAPIView
 from django.contrib.auth import get_user_model, authenticate, logout
-from .serializers import UserSerializer, LoginSerializer
+from .serializers import UserSerializer, LoginSerializer, ChangePasswordSerializer
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
@@ -76,7 +76,16 @@ class LogoutView(APIView):
         )
         
 
-
+class ChangePasswordView(GenericAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self,request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = request.user
+        user.set_password(serializer.validated_data["new_password"])
+        user.save()
+        return Response({"message": "Password Changed Successfully"})
 
 class UserList(ListCreateAPIView):
     serializer_class = UserSerializer
