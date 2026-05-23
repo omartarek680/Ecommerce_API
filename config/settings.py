@@ -52,6 +52,8 @@ INSTALLED_APPS = [
 
     # Local Apps
     "apps.accounts",
+    "apps.products",
+    "apps.cart",
 ]
 
 
@@ -173,6 +175,15 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # =========================================================
+# Media Files
+# =========================================================
+
+MEDIA_URL = "media/"
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+
+# =========================================================
 # Default Primary Key
 # =========================================================
 
@@ -198,6 +209,7 @@ REST_FRAMEWORK = {
 
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
     ),
 
     "DEFAULT_SCHEMA_CLASS": (
